@@ -73,7 +73,6 @@ class Hangman:
         save = ["a", "r", "r", "i", "v", "e"]
         save = ["d", "i", "v", "i", "d", "e"]
         save = word_list[:]
-        dat = save[:]
         # l_word = "r"
 
         yes = save.count("l")
