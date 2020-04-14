@@ -1,7 +1,7 @@
 # this is the hangman game
 import csv
 from random import choice
-from collections import Counter
+from collections import Counter, defaultdict
 
 
 class Hangman:
@@ -58,38 +58,42 @@ class Hangman:
         self.num_guesses = 6
         print("This is hangman.")
         self.given_letters = []
-        word_list = []
-        word_dict = {}
+        self.word_list = []
+        # self.word_dict = {}
+        self.word_dict = defaultdict(int)
         for letter in self.word:
-            word_list.append(letter)
+            self.word_list.append(letter)
             # word_dict[f'{letter}'] =
 
         # print(word_list)
         # print(set(word_list))
 
         # self.ask_letter()
-        num_l = 0
         save = ["f", "a", "l", "l", "e", "n"]
         save = ["a", "r", "r", "i", "v", "e"]
-        save = ["d", "i", "v", "i", "d", "e"]
-        save = word_list[:]
+        self.save = self.word_list[:]
+        self.save = ["d", "i", "v", "i", "d", "e"]
         # l_word = "r"
 
-        yes = save.count("l")
-        print(Counter(save))
+        print("\nThis is the counter dict below")
+        print(dict(Counter(self.save)))
+
+        # sade = dict(Counter(self.save))
+        # print(Counter(self.save))
         # print(Counter(save)["l"])
 
         # ---------------------------------------------------
         # this code knows the num of times a letter occur in a word
         # and paste the letters back in a list
         # ---------------------------------------------------
-        draft = []
-        for key, value in Counter(save).items():
+        self.draft = []
+        for key, value in Counter(self.save).items():
+            # print(key)
             while value > 0:
                 if value > 1:
-                    draft.append(key)
+                    self.draft.append(key)
                 value -= 1
-            draft.append(key)
+            self.draft.append(key)
             # stop here
             # if value > 1:
             #     while value > 0:
@@ -97,7 +101,20 @@ class Hangman:
             #         value -= 2
             # draft.append(key)
             # stop here
-        print(draft)
+        print("\nThis is the draft_list below")
+        print(self.draft)
+
+        war = dict(Counter(self.save))
+        # print(war)
+        # ----------------------------------------------------------
+        # this is for line 31 of the spec
+        # for key, value in war.items():
+        #     if key == "v":
+        #         print("hello value")
+        #         print(value)
+
+        # this is for line 31 of the spec
+        # ----------------------------------------------------------
         # for l in save:
         # l_word = l
         # for m in save:
@@ -123,6 +140,8 @@ class Hangman:
 
         # print(num_l)
 
+    # def
+
     def run_game(self):
         """ Starts the main lopp for the game """
         while self.game_active:
@@ -145,6 +164,10 @@ class Hangman:
                 self.is_it_a_letter()
                 self.is_letter_in_word()
 
+    def check_that_letter_occurs_the_right_amt(self):
+        """ This checks that the letter occurs for the right amount. """
+        # for letter in
+
     # def ask_letter(self):
     #     """ This asks the user for letter """
     #     # self.check_num_guesses_left()
@@ -160,19 +183,28 @@ class Hangman:
         # else:
         # print(self.letter)
 
+    def is_it_first_letter(self):
+        """ This checks whether the letter is the first to inputted.  """
+        # if len(self.given_letters) = 0
+
     def is_letter_in_word(self):
         """ This checks whether the letter is in the word """
         if self.letter in self.word:
-            print("Yes, that letter is in the word")
-            # self.ask_letter()
-            # self.is_it_a_letter()
-            # self.is_letter_in_word()
-            # print(self.word)
+            self.check_whether_letter_was_prev_mentioned()
+            # print("ok i see")
+            # print("Yes, that letter is in the word")
 
-            l = self.letter
-            self.given_letters.append(l)
+            # self.check_whether_letter_was_prev_mentioned()
+            # self.run_game()
+
+            # print("oremi")
+            self.given_letters.append(self.letter)
+            print(self.letter)
+            self.word_dict[f"{self.letter}"] = 1
+            # if
             print(self.given_letters)
-            self.run_game()
+            print(self.word_dict)
+            # self.run_game()
 
         else:
             print(
@@ -181,6 +213,15 @@ class Hangman:
             self.num_guesses -= 1
             self.check_num_guesses_left()
             self.run_game()
+
+    def check_whether_letter_was_prev_mentioned(self):
+        """ This checks whether the letter was previously mentioned """
+        if self.letter in self.given_letters:
+            print("This word has been mentioned")
+            # self.word_dict[f"{self.letter}"] += 1
+            self.word_dict[self.letter] += 1
+            print(self.word_dict)
+            print("this runs")
 
     def check_num_guesses_left(self):
         """ This checks if the number of guesses is less than zero """
