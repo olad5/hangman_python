@@ -1,5 +1,6 @@
 # this is the hangman game
 import csv
+import string
 from random import choice
 from collections import Counter, defaultdict
 
@@ -11,35 +12,7 @@ class Hangman:
         """ This initializes the hangman class. """
 
         self.game_active = True
-
-        self.alphabets = [
-            "a",
-            "b",
-            "c",
-            "d",
-            "e",
-            "f",
-            "g",
-            "h",
-            "i",
-            "j",
-            "k",
-            "l",
-            "m",
-            "n",
-            "o",
-            "p",
-            "q",
-            "r",
-            "s",
-            "t",
-            "u",
-            "v",
-            "w",
-            "x",
-            "y",
-            "z",
-        ]
+        self.alphabets = list(string.ascii_lowercase)
 
         self.words = []
 
@@ -73,6 +46,7 @@ class Hangman:
         sersave = ["a", "r", "r", "i", "v", "e"]
         self.save = self.word_list[:]
         # self.save = ["d", "i", "v", "i", "d", "e"]
+        self.save = ["b", "o", "t", "t", "o", "m"]
         # l_word = "r"
 
         print("\nThis is the counter dict below")
@@ -103,8 +77,8 @@ class Hangman:
             # stop here
         print("\nThis is the draft_list below")
         print(self.draft)
-        print(sorted(self.draft))
-        print(sorted(self.save))
+        # print(sorted(self.draft))
+        # print(sorted(self.save))
 
         self.war = dict(Counter(self.save))
         # print(war)
@@ -149,7 +123,7 @@ class Hangman:
         while self.game_active:
             print("\nEnter 'exit' to quit anytime. ")
             # print(f"the word is {self.word}")
-            print(f"the word is divide")
+            print(f"the word is bottom")
             self.letter = input("Pick a letter that occurs in the word  ")
 
             if self.letter == "exit":
@@ -164,6 +138,7 @@ class Hangman:
 
             else:
                 # self.ask_letter()
+                # self.more_unfilled_than_guesses()
                 self.is_it_a_letter()
                 self.is_letter_in_word()
 
@@ -179,9 +154,8 @@ class Hangman:
     def is_it_a_letter(self):
         """ This checks whether the input is a letter """
         if self.letter not in self.alphabets:
-            print("\nSorry, you must chose a letter.")
+            print("\nSorry, you must choose a letter.")
             # self.ask_letter()
-            # self.is_it_a_letter()
             self.run_game()
         # else:
         # print(self.letter)
@@ -191,13 +165,14 @@ class Hangman:
         # print("Yea this is the first word!!")
         # if the letter is added for the first time, give it a count
         if self.letter not in self.given_letters:
-            self.word_dict[f"{self.letter}"] = 1
+            # self.word_dict[f"{self.letter}"] = 1
+            self.word_dict[self.letter] = 1
 
     def check_the_num_occurence(self):
         """ This checks the num of occurence of the letter """
         for key, value in self.war.items():
             if key == f"{self.letter}":
-                print("hello value")
+                # print("hello value")
                 # print(value)
                 self.num_letter_occurence = value
 
@@ -207,55 +182,110 @@ class Hangman:
         # the correct code above
         # ----------------------------------------
         if self.letter in self.save:
+            # print(self.given_letters)
             self.check_the_num_occurence()
             self.is_it_first_letter()
 
             self.check_whether_letter_was_prev_mentioned()
+            # print("i ran")
+            self.given_letters.append(self.letter)
             # print(self.word_dict)
 
-            print(self.letter)
-            self.is_it_first_letter()
-            self.given_letters.append(self.letter)
+            self.print_letter_in_word()
 
-            print(self.given_letters)
-            print(self.word_dict)
-            self.player_wins()
+            # print(self.letter)
+            # self.is_it_first_letter()
+            # self.given_letters.append(self.letter)
+
+            # print(self.given_letters)
+            # if self.given_letters[-1] == self.letter:
+            # else:
+            # pass
+            # print(self.given_letters)
+
+            # print(self.word_dict)
+            self.check_if_player_wins()
 
         else:
-            self.inputs_wrong_letter()
+            if self.game_active == False:
+                pass
+            else:
+                self.inputs_wrong_letter()
+
+    def print_letter_in_word(self):
+        """ This prints that the letter is the word. and """
+        # original code that was working to some extent
+        # if (
+        #     self.given_letters.count(self.letter) > self.num_letter_occurence
+        # ) and self.num_guesses == 1:
+        #     pass
+        # else:
+        #     print(f"\nYes {self.letter} is in the word")
 
     def check_whether_letter_was_prev_mentioned(self):
         """ This checks whether the letter was previously mentioned """
         if self.letter in self.given_letters:
-            print("This word has been mentioned")
+            # print("This word has been mentioned")
 
             if self.given_letters.count(self.letter) < self.num_letter_occurence:
+                # self.given_letters.append(self.letter)
                 self.word_dict[self.letter] += 1
             else:
                 self.inputs_wrong_letter()
 
-            print(self.word_dict)
-            print("this runs")
+            # print(self.word_dict)
+            # print("this runs")
 
     def inputs_wrong_letter(self):
         """ This checks whether the wrong letter is inputted. """
-        print(
-            f"No, that letter is not in the word. \nYou have {self.num_guesses - 1} guesses left"
-        )
+        # if self.num_guesses > 2:
+        #     print(
+        #         f"No, that letter is not in the word. \nYou have {self.num_guesses - 1} guesses left."
+        #     )
+        # self.given_letters.pop()
+        if self.num_guesses > 1:
+            if self.num_guesses > 2:
+                print(
+                    f"No, that letter is not in the word. \nYou have {self.num_guesses - 1} guesses left."
+                )
+            else:
+                print("No, that letter is not in the word. \nYou have 1 guess left.")
+            print(f"The letters you have choseen ==> {self.given_letters}")
+        # else:
+        #     pass
+        # print(self.given_letters)
         self.num_guesses -= 1
         self.check_num_guesses_left()
-        self.run_game()
+        if self.game_active == False:
+            pass
+        else:
+            self.run_game()
 
     def check_num_guesses_left(self):
         """ This checks if the number of guesses is less than zero """
         if self.num_guesses == 0:
+            print("\nGAME OVER :(")
+            print("You are out of guesses.")
             self.game_active = False
 
-    def player_wins(self):
+    # def more_unfilled_than_guesses(self):
+    #     """
+    #     this checks if the number of letters to be filled are more than the
+    #     guesses left.
+    #     """
+    #     self.spaces_unfilled = len(self.save) - len(self.given_letters)
+    #     print("Spaces unfilled is ")
+    #     print(self.spaces_unfilled)
+    #     if self.spaces_unfilled > self.num_guesses:
+    #         print("GAME OVER :(")
+    #         print("You had more spaces to be filled and less guesses.")
+    #         self.game_active = False
+
+    def check_if_player_wins(self):
         """ This checks the word guessed is the same with the word COM chose """
         if sorted(self.given_letters) == sorted(self.save):
-            print("You won!!")
-            print("Congrats, You've won!!")
+            # print("\nYou won!!")
+            print("\nCongrats, You've won!!")
             self.game_active = False
 
 
