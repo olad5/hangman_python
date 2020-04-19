@@ -35,71 +35,7 @@ class Hangman:
         for letter in self.word:
             self.word_list.append(letter)
 
-        # save = ["f", "a", "l", "l", "e", "n"]
-        # sersave = ["a", "r", "r", "i", "v", "e"]
-        # self.word_list = self.word_list[:]
-        # self.word_list = ["d", "i", "v", "i", "d", "e"]
-        # self.word_list = ["b", "o", "t", "t", "o", "m"]
-        # l_word = "r"
-        # print("\nThis is the counter dict below")
-        # print(dict(Counter(self.word_list)))
-
-        # sade = dict(Counter(self.word_list))
-        # print(Counter(self.word_list))
-        # print(Counter(save)["l"])
-
-        # ---------------------------------------------------
-        # this code knows the num of times a letter occured in a word
-        # and paste the letters back in a list
-        # ---------------------------------------------------
-        # self.draft = []
-        # for key, value in Counter(self.word_list).items():
-        #     # print(key)
-        #     while value > 0:
-        #         if value > 1:
-        #             self.draft.append(key)
-        #         value -= 1
-        #     self.draft.append(key)
-        # print("\nThis is the draft_list below")
-        # print(self.draft)
-        # print(sorted(self.draft))
-        # print(sorted(self.word_list))
-
         self.word_counter_dict = dict(Counter(self.word_list))
-        # print(war)
-        # ----------------------------------------------------------
-        # this is for line 31 of the spec
-        # for key, value in war.items():
-        #     if key == "v":
-        #         print("hello value")
-        #         print(value)
-
-        # this is for line 31 of the spec
-        # ----------------------------------------------------------
-        # for l in save:
-        # l_word = l
-        # for m in save:
-        #     if m == l_word:
-        #         # print(f"{m} occurs here")
-
-        #         num_l += 1
-        # ---------------------------------------------------
-        # this code knows the num of times a letter occur in a word
-        # and paste the letters back in a listb
-        # ---------------------------------------------------
-
-        # ---------------------------------------------------
-        # this shows the num of times the letter 'r' is in save
-        # ---------------------------------------------------
-        # l_word = "r"
-        # for l in save:
-        #     if l == l_word:
-        #         num_l += 1
-        # ---------------------------------------------------
-        # this shows the num of times the letter 'r' is in save
-        # ---------------------------------------------------
-
-        # print(num_l)
 
     def run_game(self):
         """ Starts the main lopp for the game """
@@ -130,8 +66,6 @@ class Hangman:
 
     def is_it_first_letter(self):
         """ This checks whether the letter is the first to inputted.  """
-        # print("Yea this is the first word!!")
-        # if the letter is added for the first time, give it a count
         if self.letter not in self.given_letters:
             self.word_dict[self.letter] = 1
 
@@ -173,7 +107,6 @@ class Hangman:
     def check_whether_letter_was_prev_mentioned(self):
         """ This checks whether the letter was previously mentioned """
         if self.letter in self.given_letters:
-            # print("This word has been mentioned")
 
             if self.given_letters.count(self.letter) < self.num_letter_occurence:
                 self.word_dict[self.letter] += 1
